@@ -37,6 +37,52 @@
     <main class="main">
       <p class="main__empty">Список контактов пуст</p>
     </main>
+    <!-- Overlay затемнения для бокового меню -->
+    <div class="sidebar-overlay"></div>
+    <!-- Боковое меню групп -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <h2 class="sidebar__title">Группы контактов</h2>
+        <button class="sidebar__close">
+          <img src="images/cross.png" alt="Закрыть" />
+        </button>
+      </div>
+      <!--список групп -->
+      <div class="sidebar__list">
+        <div class="sidebar__item">
+          <span class="sidebar__item-name">Друзья</span>
+          <button class="sidebar__item-remove">
+            <img src="images/trash.png" alt="Удалить группу" />
+          </button>
+        </div>
+        <div class="sidebar__item">
+          <span class="sidebar__item-name">Коллеги</span>
+          <button class="sidebar__item-remove">
+            <img src="images/trash.png" alt="Удалить группу" />
+          </button>
+        </div>
+      </div>
+      <div class="sidebar__footer">
+        <button class="sidebar__btn sidebar__btn--add">Добавить</button>
+        <button class="sidebar__btn sidebar__btn--save">Сохранить</button>
+      </div>
+    </aside>
+    <!-- Модальное окно удаления группы -->
+    <div class="modal-overlay"></div>
+    <div class="modal">
+      <button class="modal__close">
+        <img src="images/cross.png" alt="Закрыть" />
+      </button>
+      <h3 class="modal__title">Удалить группу?</h3>
+      <p class="modal__text">
+        Удаление группы повлечет за собой удаление контактов связанных с этой
+        группой
+      </p>
+      <div class="modal__actions">
+        <button class="modal__btn modal__btn--confirm">Да, удалить</button>
+        <button class="modal__btn modal__btn--cancel">Отмена</button>
+      </div>
+    </div>
     <script type="module" src="js/script.js"></script>
   </body>
 </html>
