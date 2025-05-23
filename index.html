@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Список контактов</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__inner">
+        <button class="header__btn">
+          <img
+            src="images/contact-book.png"
+            alt="Иконка книги контактов"
+            class="header__btn-icon"
+          />
+          <span class="header__btn-text">Книга контактов</span>
+        </button>
+        <div class="header__actions">
+          <button class="header__action-btn header__action-btn--add">
+            <span class="header__action-text">Добавить контакт</span>
+            <img
+              src="images/plus.png"
+              alt="Иконка добавить контакт"
+              class="header__action-icon"
+            />
+          </button>
+          <button class="header__action-btn header__action-btn--groups">
+            <span class="header__action-text">Группы</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="header__mobile-add-placeholder"></div>
+    <main class="main">
+      <p class="main__empty">Список контактов пуст</p>
+    </main>
+    <script type="module" src="js/script.js"></script>
+  </body>
+</html>

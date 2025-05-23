@@ -1,0 +1,25 @@
+{
+  "name": "testovoeavtobus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "build-css": "sass css/main.scss css/main.css",
+    "watch-css": "sass --watch css/main.scss:css/main.css",
+    "build-mobile": "sass css/mobile.scss css/mobile.css",
+    "watch-mobile": "sass --watch css/mobile.scss:css/mobile.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.89.0",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "typescript": "^5.8.3"
+  }
+}
