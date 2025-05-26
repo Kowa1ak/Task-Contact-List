@@ -102,10 +102,11 @@ if (sidebarAddBtn && sidebarList) {
     input.type = "text";
     input.className = "sidebar__item-name";
     input.placeholder = "Введите название";
+    // при добавлении новой группы: иконка корзины
     const removeBtn = document.createElement("button");
     removeBtn.className = "sidebar__item-remove";
     const img = document.createElement("img");
-    img.src = "images/trash.png";
+    img.src = new URL("../images/trash.png", import.meta.url).href;
     img.alt = "Удалить группу";
     removeBtn.appendChild(img);
     removeBtn.addEventListener("click", () => {
@@ -402,7 +403,7 @@ function renderGroups(): void {
       const removeBtn = document.createElement("button");
       removeBtn.className = "sidebar__item-remove";
       const img = document.createElement("img");
-      img.src = "images/trash.png";
+      img.src = new URL("../images/trash.png", import.meta.url).href;
       img.alt = "Удалить группу";
       removeBtn.appendChild(img);
       removeBtn.addEventListener("click", () => {
@@ -423,10 +424,13 @@ function renderGroups(): void {
     groups.forEach((g) => {
       const groupDiv = document.createElement("div");
       groupDiv.className = "group";
+      // заголовок группы со стрелкой
       const header = document.createElement("button");
       header.className = "group__header";
       header.innerHTML = `<span class="group__title">${g.name}</span>
-        <img class="group__icon" src="images/down_arrow.png" alt="Toggle">`;
+        <img class="group__icon" src="${
+          new URL("../images/down_arrow.png", import.meta.url).href
+        }" alt="Toggle">`;
       header.addEventListener("click", () => groupDiv.classList.toggle("open"));
       const list = document.createElement("div");
       list.className = "group__list";
@@ -441,15 +445,20 @@ function renderGroups(): void {
         g.contacts.forEach((c) => {
           const item = document.createElement("div");
           item.className = "group__item";
+          // рендер контактов в группе
           item.innerHTML = `
             <span class="group__name">${c.name}</span>
             <span class="group__phone">${c.phone}</span>
             <div class="group__actions">
               <button class="group__btn group__btn--edit">
-                <img src="images/pen_gray.png" alt="Редактировать" />
+                <img src="${
+                  new URL("../images/pen_gray.png", import.meta.url).href
+                }" alt="Редактировать" />
               </button>
               <button class="group__btn group__btn--remove">
-                <img src="images/trash.png" alt="Удалить" />
+                <img src="${
+                  new URL("../images/trash.png", import.meta.url).href
+                }" alt="Удалить" />
               </button>
             </div>`;
           item
@@ -511,9 +520,13 @@ function showToast(message: string, type: "success" | "error") {
   initToastContainer();
   const toast = document.createElement("div");
   toast.className = "toast";
+  // иконка тоста
   const icon = document.createElement("img");
   icon.className = "toast__icon";
-  icon.src = type === "success" ? "images/right.png" : "images/error.png";
+  icon.src =
+    type === "success"
+      ? new URL("../images/right.png", import.meta.url).href
+      : new URL("../images/error.png", import.meta.url).href;
   const text = document.createElement("span");
   text.className = "toast__text";
   text.textContent = message;
