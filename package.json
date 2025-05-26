@@ -8,9 +8,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "build-css": "sass css/main.scss css/main.css",
-    "watch-css": "sass --watch css/main.scss:css/main.css",
-    "build-mobile": "sass css/mobile.scss css/mobile.css",
-    "watch-mobile": "sass --watch css/mobile.scss:css/mobile.css"
+    "watch-css": "sass --watch css/main.scss:css/main.css"
   },
   "keywords": [],
   "author": "",

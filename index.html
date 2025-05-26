@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Список контактов</title>
+    <link rel="icon" href="images/contact.png" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/mobile.css" />
   </head>
   <body>
     <header class="header">
       <div class="header__inner">
-        <button class="header__btn">
+        <button class="header__btn" id="headerReloadBtn">
           <img
             src="images/contact.png"
             alt="Иконка книги контактов"
@@ -124,5 +125,13 @@
     <!-- Подключение IMask.js для маски телефонов -->
     <script src="https://unpkg.com/imask"></script>
     <script type="module" src="js/script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const reloadBtn = document.getElementById("headerReloadBtn");
+        reloadBtn?.addEventListener("click", () => {
+          window.location.reload();
+        });
+      });
+    </script>
   </body>
 </html>

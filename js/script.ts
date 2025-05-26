@@ -80,45 +80,42 @@ modalOverlay?.addEventListener("click", closeModal);
 
 modalConfirm?.addEventListener("click", closeModal);
 
-// Добавление новой группы через инпут
 const sidebarAddBtn =
   document.querySelector<HTMLButtonElement>(".sidebar__btn--add");
 const sidebarList = document.querySelector<HTMLElement>(".sidebar__list");
+const sidebarSaveBtn = document.querySelector<HTMLButtonElement>(
+  ".sidebar:not(.contact-sidebar) .sidebar__btn--save"
+);
+
 if (sidebarAddBtn && sidebarList) {
   sidebarAddBtn.addEventListener("click", () => {
-    // проверяем последний инпут на непустое значение
     const inputs = sidebarList.querySelectorAll<HTMLInputElement>(
       ".sidebar__item-input"
     );
     const lastInput = inputs[inputs.length - 1];
     if (lastInput && lastInput.value.trim() === "") {
-      return; // не добавляем пока пусто
+      return;
     }
-    // создаём новый элемент списка с инпутом
     const itemDiv = document.createElement("div");
     itemDiv.className = "sidebar__item";
     const input = document.createElement("input");
     input.type = "text";
     input.className = "sidebar__item-name";
     input.placeholder = "Введите название";
-    // кнопка удаления
     const removeBtn = document.createElement("button");
     removeBtn.className = "sidebar__item-remove";
     const img = document.createElement("img");
     img.src = "images/trash.png";
     img.alt = "Удалить группу";
     removeBtn.appendChild(img);
-    // добавляем обработчик удаления для нового элемента
     removeBtn.addEventListener("click", () => {
       itemDiv.remove();
     });
-    // вставляем в DOM
     itemDiv.append(input, removeBtn);
     sidebarList.appendChild(itemDiv);
   });
 }
 
-// Toggle групп на главном экране
 const groupHeaders = document.querySelectorAll<HTMLElement>(".group__header");
 groupHeaders.forEach((header) => {
   header.addEventListener("click", () => {
@@ -129,7 +126,6 @@ groupHeaders.forEach((header) => {
   });
 });
 
-// Добавить контакт: открытие contact-sidebar
 const addContactBtn = document.querySelector<HTMLButtonElement>(
   ".header__action-btn--add"
 );
@@ -145,14 +141,12 @@ contactCloseBtn?.addEventListener("click", () => {
   overlay?.classList.remove("open");
 });
 
-// Закрытие по клику вне панели для форм и групп
 overlay?.addEventListener("click", () => {
   sidebar?.classList.remove("open");
   contactSidebar?.classList.remove("open");
   overlay?.classList.remove("open");
 });
 
-// Custom dropdown logic for contact sidebar
 const customDropdowns =
   document.querySelectorAll<HTMLElement>(".custom-dropdown");
 customDropdowns.forEach((dropdown) => {
@@ -170,7 +164,6 @@ customDropdowns.forEach((dropdown) => {
   });
   items.forEach((item) => {
     item.addEventListener("click", () => {
-      // обновляем только текст, сохраняя иконку
       const textSpan = selected.querySelector<HTMLElement>(
         ".custom-dropdown__text"
       );
@@ -180,7 +173,6 @@ customDropdowns.forEach((dropdown) => {
     });
   });
 });
-// Close dropdown when clicking outside
 document.addEventListener("click", () => {
   customDropdowns.forEach((dd) => dd.classList.remove("open"));
 });
@@ -196,7 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Валидация полей добавления контакта
 const saveContactBtn = document.querySelector<HTMLButtonElement>(
   ".contact-sidebar .sidebar__btn--save"
 );
@@ -204,7 +195,7 @@ if (saveContactBtn) {
   saveContactBtn.addEventListener("click", (e) => {
     e.preventDefault();
     let valid = true;
-    // ФИО
+
     const fioInput = document.querySelector<HTMLInputElement>(
       'input[placeholder="Введите ФИО"]'
     );
@@ -219,7 +210,6 @@ if (saveContactBtn) {
       fioInput.classList.remove("invalid");
       if (fioError) fioError.textContent = "";
     }
-    // Телефон
     const phoneInput = document.querySelector<HTMLInputElement>(
       'input[placeholder="Введите номер"]'
     );
@@ -234,10 +224,11 @@ if (saveContactBtn) {
       phoneInput.classList.remove("invalid");
       if (phoneError) phoneError.textContent = "";
     }
-    // Группа
-    const dropdown = document.querySelector<HTMLDivElement>(".custom-dropdown");
+    const dropdown = document.querySelector<HTMLDivElement>(
+      ".contact-sidebar .custom-dropdown"
+    );
     const groupError = document.querySelector<HTMLDivElement>(
-      '.error-message[data-for="group"]'
+      '.contact-sidebar .error-message[data-for="group"]'
     );
     const selectedText = dropdown?.querySelector<HTMLElement>(
       ".custom-dropdown__text"
@@ -251,11 +242,9 @@ if (saveContactBtn) {
       if (groupError) groupError.textContent = "";
     }
     if (!valid) return;
-    // TODO: логика сохранения контакта
   });
 }
 
-// Очистка ошибки при вводе/выборе
 const inputs = document.querySelectorAll<HTMLInputElement>(
   ".sidebar__item-input"
 );
@@ -281,19 +270,16 @@ if (dropdownEl) {
   });
 }
 
-// Модель контакта
-interface Contact {
-  id: string;
-  name: string;
-  phone: string;
+class Contact {
+  constructor(public id: string, public name: string, public phone: string) {}
 }
 
-// Обновляем модель группы
 interface Group {
   id: string;
   name: string;
   contacts: Contact[];
 }
+
 class GroupStorage {
   static getGroups(): Group[] {
     return JSON.parse(localStorage.getItem("groups") || "[]");
@@ -307,7 +293,6 @@ class GroupStorage {
   }
 }
 
-// Заполняем дропдаун актуальными группами
 function populateGroupDropdown(): void {
   const dropdown = document.querySelector<HTMLDivElement>(
     ".contact-sidebar .custom-dropdown"
@@ -331,7 +316,7 @@ function populateGroupDropdown(): void {
       if (textSpan) textSpan.textContent = g.name;
       dropdown.dataset.selectedId = g.id;
       dropdown.classList.remove("open");
-      selected.classList.remove("placeholder"); // вот здесь
+      selected.classList.remove("placeholder");
     });
     list.appendChild(li);
   });
@@ -339,11 +324,9 @@ function populateGroupDropdown(): void {
 
 let deletingGroupId: string | null = null;
 
-// режим редактирования
 let editingGroupId: string | null = null;
 let editingContactId: string | null = null;
 
-// общая функция открытия панели добавления/редактирования
 function openContactSidebar(
   mode: "add" | "edit",
   groupId?: string,
@@ -399,14 +382,12 @@ function openContactSidebar(
 
 function renderGroups(): void {
   const groups = GroupStorage.getGroups();
-  // Если нет групп, показать сообщение и выйти
   const mainContainer = document.querySelector<HTMLElement>(".main .groups");
   if (groups.length === 0 && mainContainer) {
     mainContainer.innerHTML =
       '<div class="main__empty full">Список контактов пуст</div>';
     return;
   }
-  // sidebar
   const sidebarListEl = document.querySelector<HTMLElement>(
     ".sidebar:not(.contact-sidebar) .sidebar__list"
   );
@@ -425,7 +406,6 @@ function renderGroups(): void {
       img.alt = "Удалить группу";
       removeBtn.appendChild(img);
       removeBtn.addEventListener("click", () => {
-        // открыть модалку подтверждения
         deletingGroupId = g.id;
         sidebar?.classList.remove("open");
         overlay?.classList.remove("open");
@@ -436,7 +416,6 @@ function renderGroups(): void {
       sidebarListEl.appendChild(itemDiv);
     });
   }
-  // main
   const mainGroupsContainer =
     document.querySelector<HTMLElement>(".main .groups");
   if (mainGroupsContainer) {
@@ -473,7 +452,6 @@ function renderGroups(): void {
                 <img src="images/trash.png" alt="Удалить" />
               </button>
             </div>`;
-          // удаление контакта
           item
             .querySelector<HTMLButtonElement>(".group__btn--remove")
             ?.addEventListener("click", () => {
@@ -482,8 +460,8 @@ function renderGroups(): void {
               grp.contacts = grp.contacts.filter((cc) => cc.id !== c.id);
               GroupStorage.saveGroups(groups);
               renderGroups();
+              showToast("Контакт успешно удалён", "success");
             });
-          // обработчик редактирования
           item
             .querySelector<HTMLButtonElement>(".group__btn--edit")
             ?.addEventListener("click", () =>
@@ -499,18 +477,16 @@ function renderGroups(): void {
   }
 }
 
-// Подтверждение удаления группы
 modalConfirm?.addEventListener("click", () => {
   if (deletingGroupId) {
     GroupStorage.removeGroup(deletingGroupId);
-    renderGroups(); // сразу рендерим — удалённая группа пропадёт
+    renderGroups();
     deletingGroupId = null;
   }
   modalOverlay?.classList.remove("open");
   modal?.classList.remove("open");
 });
 
-// Инициализация и первичный рендер
 document.addEventListener("DOMContentLoaded", () => {
   if (!localStorage.getItem("groups")) {
     GroupStorage.saveGroups([
@@ -522,11 +498,84 @@ document.addEventListener("DOMContentLoaded", () => {
   populateGroupDropdown();
 });
 
-// Логика сохранения контакта
+let toastContainer: HTMLElement | null = null;
+function initToastContainer() {
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.className = "toast-container";
+    document.body.append(toastContainer);
+  }
+}
+
+function showToast(message: string, type: "success" | "error") {
+  initToastContainer();
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  const icon = document.createElement("img");
+  icon.className = "toast__icon";
+  icon.src = type === "success" ? "images/right.png" : "images/error.png";
+  const text = document.createElement("span");
+  text.className = "toast__text";
+  text.textContent = message;
+  toast.append(icon, text);
+  toastContainer!.append(toast);
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+sidebarSaveBtn?.addEventListener("click", (e: Event) => {
+  e.preventDefault();
+  const sidebarListEl = document.querySelector<HTMLElement>(
+    ".sidebar:not(.contact-sidebar) .sidebar__list"
+  );
+  const inputs =
+    sidebarListEl?.querySelectorAll<HTMLInputElement>(
+      "input.sidebar__item-name"
+    ) || [];
+
+  const existingGroups = GroupStorage.getGroups();
+  for (const input of inputs) {
+    const nameVal = input.value.trim();
+    if (nameVal && existingGroups.some((g) => g.name === nameVal)) {
+      showToast("Группа с таким именем уже существует", "error");
+      return;
+    }
+  }
+
+  inputs.forEach((input) => {
+    const nameVal = input.value.trim();
+    if (nameVal) {
+      existingGroups.push({
+        id: Date.now().toString(),
+        name: nameVal,
+        contacts: [],
+      });
+    }
+  });
+  GroupStorage.saveGroups(existingGroups);
+  renderGroups();
+  populateGroupDropdown();
+  sidebar?.classList.remove("open");
+  overlay?.classList.remove("open");
+  showToast("Группа успешно сохранена", "success");
+});
+
+modalConfirm?.addEventListener("click", () => {
+  if (deletingGroupId) {
+    GroupStorage.removeGroup(deletingGroupId);
+    renderGroups();
+    deletingGroupId = null;
+  }
+  modalOverlay?.classList.remove("open");
+  modal?.classList.remove("open");
+  showToast("Группа и все контакты удалены", "success");
+});
+
 saveContactBtn?.addEventListener("click", (e) => {
   e.preventDefault();
+  const wasEditing = !!editingContactId;
   let valid = true;
-  // ФИО
   const fioInput = document.querySelector<HTMLInputElement>(
     'input[placeholder="Введите ФИО"]'
   );
@@ -541,7 +590,6 @@ saveContactBtn?.addEventListener("click", (e) => {
     fioInput.classList.remove("invalid");
     if (fioError) fioError.textContent = "";
   }
-  // Телефон
   const phoneInput = document.querySelector<HTMLInputElement>(
     'input[placeholder="Введите номер"]'
   )!;
@@ -564,10 +612,11 @@ saveContactBtn?.addEventListener("click", (e) => {
       phoneError.textContent = "";
     }
   }
-  // Группа
-  const dropdown = document.querySelector<HTMLDivElement>(".custom-dropdown");
+  const dropdown = document.querySelector<HTMLDivElement>(
+    ".contact-sidebar .custom-dropdown"
+  );
   const groupError = document.querySelector<HTMLDivElement>(
-    '.error-message[data-for="group"]'
+    '.contact-sidebar .error-message[data-for="group"]'
   );
   const selectedText = dropdown?.querySelector<HTMLElement>(
     ".custom-dropdown__text"
@@ -581,81 +630,60 @@ saveContactBtn?.addEventListener("click", (e) => {
     if (groupError) groupError.textContent = "";
   }
   if (!valid) return;
-  // после успешной валидации — сохранение контакта
-  const fio = fioInput!.value.trim();
-  const phone = phoneInput!.value.trim();
-  const dropdownEl = document.querySelector<HTMLDivElement>(
-    ".contact-sidebar .custom-dropdown"
-  )!;
-  const newGroupId = dropdownEl.dataset.selectedId!;
-  const groups = GroupStorage.getGroups();
 
-  if (editingContactId && editingGroupId) {
-    // переносим контакт при смене группы
-    const oldGroup = groups.find((g) => g.id === editingGroupId)!;
-    const idx = oldGroup.contacts.findIndex((c) => c.id === editingContactId);
-    if (idx !== -1) {
-      const contact = oldGroup.contacts.splice(idx, 1)[0];
-      contact.name = fio;
-      contact.phone = phone;
-      // если группа изменилась — пушим в новую, иначе — обратно в старую
-      const targetGroup =
-        newGroupId === editingGroupId
-          ? oldGroup
-          : groups.find((g) => g.id === newGroupId)!;
-      targetGroup.contacts.push(contact);
+  const phoneVal = phoneInput.value.trim();
+  const groupList = GroupStorage.getGroups();
+  for (const grp of groupList) {
+    for (const contact of grp.contacts) {
+      if (contact.phone === phoneVal && contact.id !== editingContactId) {
+        showToast("Контакт с таким номером уже существует", "error");
+        return;
+      }
     }
-  } else {
-    // добавление нового
-    const grp = groups.find((g) => g.id === newGroupId)!;
-    grp.contacts.push({ id: Date.now().toString(), name: fio, phone });
   }
 
-  GroupStorage.saveGroups(groups);
+  const newGroupId = dropdown!.dataset.selectedId!;
+  const allGroups = GroupStorage.getGroups();
+  if (editingContactId && editingGroupId) {
+    const oldGroup = allGroups.find((g) => g.id === editingGroupId)!;
+    const idx = oldGroup.contacts.findIndex((c) => c.id === editingContactId);
+    const contact = oldGroup.contacts.splice(idx, 1)[0];
+    contact.name = fioInput!.value.trim();
+    contact.phone = phoneInput!.value.trim();
+    const targetGroup = allGroups.find((g) => g.id === newGroupId)!;
+    targetGroup.contacts.push(contact);
+  } else {
+    const targetGroup = allGroups.find((g) => g.id === newGroupId)!;
+    // В добавлении нового контакта используем класс Contact
+    targetGroup.contacts.push(
+      new Contact(
+        Date.now().toString(),
+        fioInput!.value.trim(),
+        phoneInput!.value.trim()
+      )
+    );
+  }
+  GroupStorage.saveGroups(allGroups);
   renderGroups();
   populateGroupDropdown();
 
-  // сброс режима и закрытие
   editingContactId = null;
   editingGroupId = null;
+
   const title = contactSidebar?.querySelector<HTMLElement>(".sidebar__title");
   title!.textContent = "Добавление контакта";
 
-  // закрыть и очистить
   contactSidebar?.classList.remove("open");
   overlay?.classList.remove("open");
   fioInput!.value = "";
   phoneInput!.value = "";
-  const textSpan = dropdownEl.querySelector<HTMLElement>(
+  const textSpan = dropdown!.querySelector<HTMLElement>(
     ".custom-dropdown__text"
   )!;
   textSpan.textContent = "Выберите группу";
-  dropdownEl.dataset.selectedId = "";
-  dropdownEl.classList.add("placeholder");
-});
+  dropdown!.dataset.selectedId = "";
+  dropdown!.classList.add("placeholder");
 
-// Сохранение новых групп из sidebar
-const sidebarSaveBtn = document.querySelector<HTMLButtonElement>(
-  ".sidebar:not(.contact-sidebar) .sidebar__btn--save"
-);
-sidebarSaveBtn?.addEventListener("click", (e) => {
-  e.preventDefault();
-  const sidebarListEl = document.querySelector<HTMLElement>(
-    ".sidebar:not(.contact-sidebar) .sidebar__list"
-  );
-  const inputs =
-    sidebarListEl?.querySelectorAll<HTMLInputElement>(
-      "input.sidebar__item-name"
-    ) || [];
-  const groups = GroupStorage.getGroups();
-  inputs.forEach((input) => {
-    const name = input.value.trim();
-    if (name) groups.push({ id: Date.now().toString(), name, contacts: [] });
-  });
-  GroupStorage.saveGroups(groups);
-  renderGroups();
-  populateGroupDropdown();
-  // закрыть sidebar после сохранения
-  sidebar?.classList.remove("open");
-  overlay?.classList.remove("open");
+  const msg = wasEditing ? "Контакт успешно изменён" : "Контакт успешно создан";
+  showToast(msg, "success");
 });
