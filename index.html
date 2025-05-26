@@ -35,7 +35,64 @@
     </header>
     <div class="header__mobile-add-placeholder"></div>
     <main class="main">
-      <p class="main__empty">Список контактов пуст</p>
+      <div class="groups">
+        <div class="group">
+          <button class="group__header">
+            <span class="group__title">Друзья</span>
+            <img class="group__icon" src="images/down_arrow.png" alt="Toggle" />
+          </button>
+          <div class="group__list">
+            <div class="group__item">
+              <span class="group__name">Иванов Иван Иванович</span>
+              <span class="group__phone">+7 (123) 456-78-90</span>
+              <div class="group__actions">
+                <button class="group__btn group__btn--edit">
+                  <img src="images/pen_gray.png" alt="Редактировать" />
+                </button>
+                <button class="group__btn group__btn--remove">
+                  <img src="images/trash.png" alt="Удалить" />
+                </button>
+              </div>
+            </div>
+            <div class="group__item">
+              <span class="group__name">Петров Пётр Петрович</span>
+              <span class="group__phone">+7 (987) 654-32-10</span>
+              <div class="group__actions">
+                <button class="group__btn group__btn--edit">
+                  <img src="images/pen_gray.png" alt="Редактировать" />
+                </button>
+                <button class="group__btn group__btn--remove">
+                  <img src="images/trash.png" alt="Удалить" />
+                </button>
+              </div>
+            </div>
+            <div class="group__item">
+              <span class="group__name">Сидоров Сидор Сидорович</span>
+              <span class="group__phone">+7 (555) 123-45-67</span>
+              <div class="group__actions">
+                <button class="group__btn group__btn--edit">
+                  <img src="images/pen_gray.png" alt="Редактировать" />
+                </button>
+                <button class="group__btn group__btn--remove">
+                  <img src="images/trash.png" alt="Удалить" />
+                </button>
+              </div>
+            </div>
+            <div class="group__item">
+              <span class="group__name">Кузнецов Андрей Андреевич</span>
+              <span class="group__phone">+7 (222) 987-65-43</span>
+              <div class="group__actions">
+                <button class="group__btn group__btn--edit">
+                  <img src="images/pen_gray.png" alt="Редактировать" />
+                </button>
+                <button class="group__btn group__btn--remove">
+                  <img src="images/trash.png" alt="Удалить" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <!-- Overlay затемнения для бокового меню -->
     <div class="sidebar-overlay"></div>
@@ -67,6 +124,53 @@
         <button class="sidebar__btn sidebar__btn--save">Сохранить</button>
       </div>
     </aside>
+    <!-- Боковое меню добавления контакта -->
+    <aside class="sidebar contact-sidebar">
+      <div class="sidebar__header">
+        <h2 class="sidebar__title">Добавление контакта</h2>
+        <button class="sidebar__close">
+          <img src="images/cross.png" alt="Закрыть" />
+        </button>
+      </div>
+      <div class="sidebar__list">
+        <div class="field-wrapper">
+          <input
+            type="text"
+            class="sidebar__item-input"
+            placeholder="Введите ФИО"
+          />
+          <div class="error-message" data-for="fio"></div>
+        </div>
+        <div class="field-wrapper">
+          <input
+            type="text"
+            class="sidebar__item-input"
+            placeholder="Введите номер"
+          />
+          <div class="error-message" data-for="phone"></div>
+        </div>
+        <div class="field-wrapper">
+          <div class="custom-dropdown">
+            <div class="custom-dropdown__selected placeholder">
+              <span class="custom-dropdown__text">Выберите группу</span>
+              <img
+                src="images/down_arrow.png"
+                alt="Toggle"
+                class="custom-dropdown__icon"
+              />
+            </div>
+            <ul class="custom-dropdown__list">
+              <li class="custom-dropdown__item">Друзья</li>
+              <li class="custom-dropdown__item">Коллеги</li>
+            </ul>
+          </div>
+          <div class="error-message" data-for="group"></div>
+        </div>
+      </div>
+      <div class="sidebar__footer">
+        <button class="sidebar__btn sidebar__btn--save">Сохранить</button>
+      </div>
+    </aside>
     <!-- Модальное окно удаления группы -->
     <div class="modal-overlay"></div>
     <div class="modal">
@@ -83,6 +187,8 @@
         <button class="modal__btn modal__btn--cancel">Отмена</button>
       </div>
     </div>
+    <!-- Подключение IMask.js для маски телефонов -->
+    <script src="https://unpkg.com/imask"></script>
     <script type="module" src="js/script.js"></script>
   </body>
 </html>
