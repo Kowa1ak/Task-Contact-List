@@ -5,7 +5,7 @@
   --font-color: #000000;
   --header-height: 70px;
   --mobile-gap: 24px;
-  --add-btn-height: 52px;
+  --add-btn-height: 102px;
 }
 
 @font-face {
@@ -56,9 +56,10 @@ body {
 }
 .header__btn-icon {
   display: block;
-  width: 18px;
-  height: 22px;
-  margin-right: 16px;
+  width: 22px;
+  height: 26px;
+  margin-right: 10px;
+  margin-bottom: 2px;
 }
 .header__btn-text {
   font-family: "Circe", sans-serif;
@@ -132,7 +133,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - var(--header-height) - var(--mobile-gap) - var(--add-btn-height));
 }
 
 .main__empty {
@@ -142,6 +142,14 @@ body {
   color: #9C9D9E;
   text-align: center;
   font-family: "Circe Light", sans-serif;
+}
+
+.main__empty.full {
+  width: 100%;
+  height: calc(100vh - var(--header-height) - var(--mobile-gap) - var(--add-btn-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main {
@@ -227,6 +235,18 @@ body {
   right: 24px;
   height: 1px;
   background-color: #bec0c1;
+}
+
+.group.no-contacts.open > .group__header::after {
+  display: none;
+}
+
+.group.no-contacts.open .group__list::before {
+  display: none;
+}
+
+.group__list .main__empty {
+  padding: 16px 24px;
 }
 
 .group__item:not(:last-child)::after {
@@ -363,6 +383,14 @@ body {
   z-index: 101;
   display: flex;
   flex-direction: column;
+}
+.sidebar__list {
+  padding: 24px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.sidebar__footer {
+  flex-shrink: 0;
 }
 
 .sidebar.open {
@@ -707,6 +735,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #000000;
+}
+.contact-sidebar .custom-dropdown .custom-dropdown__selected.placeholder {
+  color: #9C9D9E;
 }
 .contact-sidebar .custom-dropdown .custom-dropdown__list {
   position: absolute;
@@ -735,6 +767,10 @@ body {
 
 .contact-sidebar .custom-dropdown__selected.placeholder {
   color: #9C9D9E;
+}
+
+.contact-sidebar .custom-dropdown__selected:not(.placeholder) {
+  color: #000000 !important;
 }
 
 /* Стили ошибок полей */

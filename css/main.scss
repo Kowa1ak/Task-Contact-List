@@ -3,7 +3,7 @@
   --font-color: #000000;
   --header-height: 70px;
   --mobile-gap: 24px;
-  --add-btn-height: 52px;
+  --add-btn-height: 102px;
 }
 
 @font-face {
@@ -59,9 +59,10 @@ body {
 
     &-icon {
       display: block;
-      width: 18px;
-      height: 22px;
-      margin-right: 16px;
+      width: 22px;
+      height: 26px;
+      margin-right: 10px;
+      margin-bottom: 2px;
     }
 
     &-text {
@@ -140,7 +141,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - var(--header-height) - var(--mobile-gap) - var(--add-btn-height));
 }
 
 .main__empty {
@@ -150,6 +150,15 @@ body {
   color: #9C9D9E;
   text-align: center;
   font-family: 'Circe Light', sans-serif;
+}
+
+// Пустое состояние full: центрирование вёртикально и горизонтально
+.main__empty.full {
+  width: 100%;
+  height: calc(100vh - var(--header-height) - var(--mobile-gap) - var(--add-btn-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 // Главный экран: группы и контакты
@@ -237,7 +246,17 @@ body {
   background-color: #bec0c1;
 }
 
+.group.no-contacts.open > .group__header::after {
+  display: none;
+}
+.group.no-contacts.open .group__list::before {
+  display: none;
+}
 
+// Добавить отступы для сообщения об отсутствии контактов
+.group__list .main__empty {
+  padding: 16px 24px;
+}
 
 .group__item:not(:last-child) {
   // линия снизу для всех кроме последнего
@@ -371,6 +390,16 @@ body {
   z-index: 101;
   display: flex;
   flex-direction: column;
+
+  &__list {
+    padding: 24px;
+    flex-grow: 1;            // растягиваем список на доступную высоту
+    overflow-y: auto;        // вертикальная прокрутка при переполнении
+  }
+
+  &__footer {
+    flex-shrink: 0;          // футер не сжимается
+  }
 }
 .sidebar.open {
   transform: translateX(0);
@@ -713,6 +742,10 @@ body {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: #000000;             // базовый — чёрный
+    }
+    .custom-dropdown__selected.placeholder {
+      color: #9C9D9E;            // если placeholder — серый
     }
     .custom-dropdown__list {
       position: absolute;
@@ -744,6 +777,10 @@ body {
 // Placeholder стиль
 .contact-sidebar .custom-dropdown__selected.placeholder {
   color: #9C9D9E;
+}
+// новый стиль: когда не placeholder, текст становится чёрным
+.contact-sidebar .custom-dropdown__selected:not(.placeholder) {
+  color: #000000 !important;
 }
 
 
